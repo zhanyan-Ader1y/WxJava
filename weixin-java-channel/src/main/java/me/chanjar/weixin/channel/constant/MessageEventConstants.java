@@ -22,6 +22,8 @@ public interface MessageEventConstants {
     String ORDER_CANCEL = "channels_ec_order_cancel";
     /** 订单支付成功 */
     String ORDER_PAY = "channels_ec_order_pay";
+    /** 订单待发货 */
+    String ORDER_WAIT_SHIPPING = "channels_ec_order_wait_shipping";
     /** 订单发货 */
     String ORDER_DELIVER = "channels_ec_order_deliver";
     /** 订单确认收货 */
@@ -83,4 +85,10 @@ public interface MessageEventConstants {
     // 分享员相关
     /** 分享员变更 **/
     String SHARER_CHANGE = "channels_ec_sharer_change";
+
+    // 店铺相关
+    /** 小店注销 */
+    String CLOSE_STORE = "channels_ec_close_store";
+    /** 小店修改 */
+    String SET_SHOP_NICKNAME = "set_shop_nickname";
 }

@@ -24,6 +24,8 @@ import me.chanjar.weixin.channel.bean.message.product.BrandMessage;
 import me.chanjar.weixin.channel.bean.message.product.CategoryAuditMessage;
 import me.chanjar.weixin.channel.bean.message.product.SpuAuditMessage;
 import me.chanjar.weixin.channel.bean.message.sharer.SharerChangeMessage;
+import me.chanjar.weixin.channel.bean.message.store.CloseStoreMessage;
+import me.chanjar.weixin.channel.bean.message.store.NicknameUpdateMessage;
 import me.chanjar.weixin.channel.bean.message.supplier.SupplierItemMessage;
 import me.chanjar.weixin.channel.bean.message.vip.ExchangeInfoMessage;
 import me.chanjar.weixin.channel.bean.message.vip.UserInfoMessage;
@@ -70,6 +72,8 @@ public abstract class BaseWxChannelMessageServiceImpl implements BaseWxChannelMe
     this.addRule(OrderCancelMessage.class, ORDER_CANCEL, this::orderCancel);
     /* 订单支付成功 */
     this.addRule(OrderPayMessage.class, ORDER_PAY, this::orderPay);
+    /* 订单待发货 */
+    this.addRule(OrderIdMessage.class, ORDER_WAIT_SHIPPING, this::orderWaitShipping);
     /* 订单发货 */
     this.addRule(OrderDeliveryMessage.class, ORDER_DELIVER, this::orderDelivery);
     /* 订单确认收货 */
@@ -111,7 +115,6 @@ public abstract class BaseWxChannelMessageServiceImpl implements BaseWxChannelMe
     /* 团长 */
     this.addRule(SupplierItemMessage.class, SUPPLIER_ITEM_UPDATE, this::supplierItemUpdate);
 
-
     /* 用户加入会员 */
     this.addRule(UserInfoMessage.class, USER_VIP_JOIN, false, this::vipJoin);
     /* 用户注销会员 */
@@ -123,9 +126,13 @@ public abstract class BaseWxChannelMessageServiceImpl implements BaseWxChannelMe
     /* 用户积分兑换 */
     this.addRule(ExchangeInfoMessage.class, USER_VIP_SCORE_EXCHANGE, false, this::vipScoreExchange);
 
-
     /* 分享员变更 */
     this.addRule(SharerChangeMessage.class,SHARER_CHANGE,false,this::sharerChange);
+
+    /* 小店注销 */
+    this.addRule(CloseStoreMessage.class, CLOSE_STORE, this::closeStore);
+    /* 小店修改名称 */
+    this.addRule(NicknameUpdateMessage.class, SET_SHOP_NICKNAME, this::updateNickname);
   }
 
   /**
@@ -179,6 +186,12 @@ public abstract class BaseWxChannelMessageServiceImpl implements BaseWxChannelMe
   public void orderPay(OrderPayMessage message, String content, String appId,
     Map<String, Object> context, WxSessionManager sessionManager) {
     log.info("订单支付成功:{}", JsonUtils.encode(message));
+  }
+
+  @Override
+  public void orderWaitShipping(OrderIdMessage message, String content, String appId,
+    Map<String, Object> context, WxSessionManager sessionManager) {
+    log.info("订单待发货:{}", JsonUtils.encode(message));
   }
 
   @Override
@@ -344,22 +357,44 @@ public abstract class BaseWxChannelMessageServiceImpl implements BaseWxChannelMe
   }
 
   @Override
-  public abstract void vipJoin(UserInfoMessage message, String content, String appId,
-                               Map<String, Object> context, WxSessionManager sessionManager);
+  public void vipJoin(UserInfoMessage message, String content, String appId,
+                               Map<String, Object> context, WxSessionManager sessionManager) {
+    log.info("用户加入会员:{}", JsonUtils.encode(message));
+  }
 
   @Override
-  public abstract void vipClose(UserInfoMessage message, String content, String appId,
-                                      Map<String, Object> context, WxSessionManager sessionManager);
+  public void vipClose(UserInfoMessage message, String content, String appId,
+                                      Map<String, Object> context, WxSessionManager sessionManager) {
+    log.info("用户注销会员:{}", JsonUtils.encode(message));
+  }
 
   @Override
-  public abstract void vipGradeUpdate(UserInfoMessage message, String content, String appId,
-                                            Map<String, Object> context, WxSessionManager sessionManager);
+  public void vipGradeUpdate(UserInfoMessage message, String content, String appId,
+                                            Map<String, Object> context, WxSessionManager sessionManager) {
+    log.info("用户等级信息更新:{}", JsonUtils.encode(message));
+  }
 
   @Override
-  public abstract void vipScoreUpdate(UserInfoMessage message, String content, String appId,
-                                            Map<String, Object> context, WxSessionManager sessionManager);
+  public void vipScoreUpdate(UserInfoMessage message, String content, String appId,
+                                            Map<String, Object> context, WxSessionManager sessionManager) {
+    log.info("用户积分更新:{}", JsonUtils.encode(message));
+  }
 
   @Override
-  public abstract void vipScoreExchange(ExchangeInfoMessage message, String content, String appId,
-                                              Map<String, Object> context, WxSessionManager sessionManager);
+  public void vipScoreExchange(ExchangeInfoMessage message, String content, String appId,
+                                              Map<String, Object> context, WxSessionManager sessionManager) {
+    log.info("用户积分兑换:{}", JsonUtils.encode(message));
+  }
+
+  @Override
+  public void closeStore(CloseStoreMessage message, String content, String appId,
+    Map<String, Object> context, WxSessionManager sessionManager) {
+    log.info("小店注销:{}", JsonUtils.encode(message));
+  }
+
+  @Override
+  public void updateNickname(NicknameUpdateMessage message, String content, String appId,
+    Map<String, Object> context, WxSessionManager sessionManager) {
+    log.info("小店修改名称:{}", JsonUtils.encode(message));
+  }
 }
