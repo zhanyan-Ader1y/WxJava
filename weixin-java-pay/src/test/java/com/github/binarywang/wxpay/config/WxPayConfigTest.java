@@ -1,15 +1,12 @@
 package com.github.binarywang.wxpay.config;
 
-import com.github.binarywang.wxpay.exception.WxPayException;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.pqc.jcajce.provider.util.KeyUtil;
-import org.testng.annotations.Test;
-
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Base64;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.testng.annotations.Test;
 
 /**
  * <pre>
